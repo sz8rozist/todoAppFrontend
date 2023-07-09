@@ -1,12 +1,26 @@
-<div class="ui relaxed divided list animated" *ngFor="let todo of todos">
-  <div class="item">
-    <div class="right floated content">
-        <i (click)="onDelete(todo)" class="large trash alternate outline middle aligned icon"></i>
+<ng-container *ngIf="todos.length > 0; else elseBlock">
+  <div class="ui relaxed divided list animated" *ngFor="let todo of todos">
+    <div (click)="updateCompleted(todo)" class="item">
+      <div class="right floated content">
+        <i
+          (click)="onDelete(todo)"
+          class="large trash alternate outline middle aligned icon"
+        ></i>
       </div>
-    <i class="large github middle aligned icon"></i>
-    <div class="content">
-      <a class="header">{{ todo.title }}</a>
-      <div class="description">{{ todo.created_at }}</div>
+      <ng-container *ngIf="todo.completed; else elseBlock">
+        <i class="large check middle aligned icon green"></i>
+      </ng-container>
+      <ng-template #elseBlock>
+        <i class="large close middle aligned icon red"></i>
+      </ng-template>
+
+      <div class="content">
+        <a class="header">{{ todo.title }}</a>
+        <div class="description">{{ todo.created_at }}</div>
+      </div>
     </div>
   </div>
-</div>
+</ng-container>
+<ng-template #elseBlock>
+  <div>Nincs rögzítve teendő.</div>
+</ng-template>

@@ -22,4 +22,8 @@ export class AppComponent {
   updatedTodo(data: Todo){
     this.todos.push(data);
   }
+
+  handleUpdatedTodo(updateTodo: Todo[]){
+    this.todos = updateTodo;
+  }
 }

@@ -36,6 +36,7 @@ export class TodoFormComponent {
         created_at: formattedDatum,
         due_date: this.todoForm.get('due_date')?.value
       };
+      console.log(todo);
       this.todoService.create(todo).subscribe(
         (result) => {
           console.log(result);
@@ -43,6 +44,15 @@ export class TodoFormComponent {
         (error) => console.log(error)
       );
       this.formDataEvent.emit(todo);
+      this.clearForm();
     }
+  }
+
+  clearForm() {
+    this.todoForm.reset();
+    Object.keys(this.todoForm.controls).forEach(key => {
+      this.todoForm.get(key)?.clearValidators();
+      this.todoForm.get(key)?.updateValueAndValidity();
+    });
   }
 }

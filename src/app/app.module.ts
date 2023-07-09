@@ -7,12 +7,14 @@ import { TodoFormComponent } from './todo-form/todo-form.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { DateMaskDirective } from './date-mask.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoFormComponent,
     TodoListComponent,
+    DateMaskDirective,
   ],
   imports: [
     BrowserModule,

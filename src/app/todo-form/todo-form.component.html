@@ -1,20 +1,23 @@
-<div
-  class="ui error message"
-  *ngIf="submitted && todoForm.get('title')?.errors?.['required']"
->
-  <div class="header">Hiba</div>
-  <ul class="list">
-    <li>A teendő címének kitöltése kötelező</li>
-  </ul>
-</div>
 <form [formGroup]="todoForm" class="ui form">
   <div class="field">
     <label>Cím</label>
     <input type="text" formControlName="title" />
+    <div
+      *ngIf="submitted && todoForm.get('title')?.errors?.['required']"
+      class="ui pointing red basic label"
+    >
+      A cím megadása kötelező
+    </div>
   </div>
   <div class="field">
     <label>Határidő</label>
-    <input type="text" formControlName="due_date" appDateFormat />
+    <input type="text" formControlName="due_date" appDateMask />
+    <div
+      *ngIf="submitted && todoForm.get('due_date')?.errors?.['required']"
+      class="ui pointing red basic label"
+    >
+      A lejárati dátum megadása kötelező
+    </div>
   </div>
   <div class="field">
     <label>Leírás</label>

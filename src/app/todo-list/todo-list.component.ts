@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Todo } from '../Todo';
 import { TodoService } from '../todo.service';
 
@@ -9,7 +9,7 @@ import { TodoService } from '../todo.service';
 })
 export class TodoListComponent {
   @Input() todos: Todo[] = [];
-
+  @Output() updatedTodo = new EventEmitter<Todo[]>();
   constructor(private todoService: TodoService) {}
 
   onDelete(todo: Todo) {
@@ -21,13 +21,27 @@ export class TodoListComponent {
         console.log(error);
       }
     );
-    this.refreshList(todo);
-  }
-
-  refreshList(t: Todo) {
-    const index = this.todos.findIndex((todo) => todo.id === t.id);
+    const index = this.todoIndex(todo);
     if (index !== -1) {
       this.todos.splice(index, 1);
     }
+    this.updatedTodo.emit(this.todos);
+  }
+
+  updateCompleted(todo: Todo) {
+    todo.completed = !todo.completed;
+    this.todoService.updateTodo(todo).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    this.updatedTodo.emit(this.todos);
+  }
+
+  todoIndex(todo: Todo) {
+    return this.todos.findIndex((t) => t.id === todo.id);
   }
 }
