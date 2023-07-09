@@ -1,17 +1,26 @@
-<h3 class="ui block header">Todo app</h3>
 <div class="two column stackable ui grid container">
   <div class="column">
-    <div class="ui segment">
-      <app-todo-form (formDataEvent)="updatedTodo($event)"></app-todo-form>
+    <div class="ui segments">
+      <div class="ui secondary segment">
+        <p>Teendő hozzáadása</p>
+      </div>
+      <div class="ui segment">
+        <app-todo-form (formDataEvent)="updatedTodo($event)"></app-todo-form>
+      </div>
     </div>
   </div>
   <div class="column">
-    <div class="ui segment">
-      <app-todo-list
-        (updatedTodo)="handleUpdatedTodo($event)"
-        [todos]="todos"
-      ></app-todo-list>
-    </div>
+      <div class="ui segments">
+        <div class="ui secondary segment">
+          <p>Meglévő teendők</p>
+        </div>
+        <div class="ui segment">
+          <app-todo-list
+          (updatedTodo)="handleUpdatedTodo($event)"
+          [todos]="todos"
+        ></app-todo-list>
+        </div>
+      </div>
   </div>
 </div>
 <router-outlet></router-outlet>
