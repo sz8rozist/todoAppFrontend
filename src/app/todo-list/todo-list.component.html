@@ -1,0 +1,12 @@
+<div class="ui relaxed divided list animated" *ngFor="let todo of todos">
+  <div class="item">
+    <div class="right floated content">
+        <i (click)="onDelete(todo)" class="large trash alternate outline middle aligned icon"></i>
+      </div>
+    <i class="large github middle aligned icon"></i>
+    <div class="content">
+      <a class="header">{{ todo.title }}</a>
+      <div class="description">{{ todo.created_at }}</div>
+    </div>
+  </div>
+</div>

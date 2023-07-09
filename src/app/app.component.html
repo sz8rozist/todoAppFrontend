@@ -1,0 +1,13 @@
+<div class="two column stackable ui grid">
+  <div class="column">
+    <div class="ui segment">
+      <app-todo-form (formDataEvent)="updatedTodo($event)"></app-todo-form>
+    </div>
+  </div>
+  <div class="column">
+    <div class="ui segment">
+      <app-todo-list [todos]="todos"></app-todo-list>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>
