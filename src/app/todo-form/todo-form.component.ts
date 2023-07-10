@@ -1,28 +1,31 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, Output, EventEmitter} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { Todo } from '../Todo';
 import { TodoService } from '../todo.service';
-
 @Component({
   selector: 'app-todo-form',
   templateUrl: './todo-form.component.html',
-  styleUrls: ['./todo-form.component.css'],
+  styleUrls: ['./todo-form.component.css']
 })
 export class TodoFormComponent {
-  todoForm: FormGroup;
-  submitted = false;
-  @Output() formDataEvent = new EventEmitter<Todo>();
+  @Input() modalOpen = false;
+  @Output() closeModalEvent = new EventEmitter();
+  todoForm : FormGroup;
+  @Output() dataAdded = new EventEmitter();
 
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService){
     this.todoForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl(''),
-      due_date: new FormControl('',[Validators.required])
+      due_date: new FormControl('', [Validators.required])
     });
   }
+  
+  closeModal() {
+    this.closeModalEvent.emit();
+  }
 
-  onSubmit() {
-    this.submitted = true;
+  onSubmit(){
     if (this.todoForm.valid) {
       const ma = new Date();
       const ev = ma.getFullYear().toString().padStart(4, '0'); // Év, 4 karakterre kiegészítve nullákkal
@@ -43,16 +46,8 @@ export class TodoFormComponent {
         },
         (error) => console.log(error)
       );
-      this.formDataEvent.emit(todo);
-      this.clearForm();
+      this.closeModalEvent.emit();
+      this.dataAdded.emit(todo);
     }
-  }
-
-  clearForm() {
-    this.todoForm.reset();
-    Object.keys(this.todoForm.controls).forEach(key => {
-      this.todoForm.get(key)?.clearValidators();
-      this.todoForm.get(key)?.updateValueAndValidity();
-    });
   }
 }

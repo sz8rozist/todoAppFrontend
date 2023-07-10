@@ -1,26 +1,26 @@
-<ng-container *ngIf="todos.length > 0; else elseBlock">
-  <div class="ui relaxed divided list animated" *ngFor="let todo of todos">
-    <div (click)="updateCompleted(todo)" class="item">
-      <div class="right floated content">
-        <i
-          (click)="onDelete(todo)"
-          class="large trash alternate outline middle aligned icon"
-        ></i>
-      </div>
-      <ng-container *ngIf="todo.completed; else elseBlock">
-        <i class="large check middle aligned icon green"></i>
-      </ng-container>
-      <ng-template #elseBlock>
-        <i class="large close middle aligned icon red"></i>
-      </ng-template>
-
-      <div class="content">
-        <a class="header">{{ todo.title }}</a>
-        <div class="description">{{ todo.created_at }}</div>
+<div class="ui grid"  style="padding-top: 50px;">
+  <div class="sixteen wide column">
+    <div class="ui middle aligned divided list" *ngFor="let todo of todos">
+      <div class="item">
+        <div class="right floated content">
+          <i class="trash icon" (click)="onDelete(todo)"></i>
+        </div>
+        <ng-container *ngIf="todo.completed; else: elseBlock">
+            <i class="icon check square" style="color: green"></i>
+        </ng-container>
+        <ng-template #elseBlock>
+            <i class="icon minus square" style="color: red;"></i>
+        </ng-template>
+        <div class="content" (click)="onUpdateCompleted(todo)">
+          <div class="header">{{ todo.title }}</div>
+          {{ todo.description }}
+        </div>
       </div>
     </div>
   </div>
-</ng-container>
-<ng-template #elseBlock>
-  <div>Nincs rögzítve teendő.</div>
-</ng-template>
+</div>
+<div (click)="openModal()" class="ui bottom primary attached button" style="margin-top: 15px">
+  Teendő hozzáadása
+</div>
+<app-todo-form (dataAdded)="onDataAdded($event)"  [modalOpen]="modalOpen" (closeModalEvent)="closeModal()"></app-todo-form>
+

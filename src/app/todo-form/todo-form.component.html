@@ -1,27 +1,35 @@
-<form [formGroup]="todoForm" class="ui form">
-  <div class="field">
-    <label>Cím</label>
-    <input type="text" formControlName="title" />
-    <div
-      *ngIf="submitted && todoForm.get('title')?.errors?.['required']"
-      class="ui pointing red basic label"
-    >
-      A cím megadása kötelező
+<div class="ui dimmer modals page" [class.active]="modalOpen">
+    <div class="ui modal" [class.active]="modalOpen">
+      <i class="close icon" (click)="closeModal()"></i>
+      <div class="header">
+        Teendő hozzáadása
+      </div>
+      <div class="content">
+        <form [formGroup]="todoForm" class="ui form">
+            <div class="field">
+              <label>Teendő címe</label>
+              <input type="text"  formControlName="title">
+              <div class="ui pointing red basic label" *ngIf="todoForm.get('title')?.errors?.['required'] && todoForm.touched">
+                A teendő címének kitöltése kötelező
+              </div>
+            </div>
+            <div class="field">
+              <label>Határidő</label>
+              <input type="text" formControlName="due_date" appDateMask>
+              <div class="ui pointing red basic label" *ngIf="todoForm.get('due_date')?.errors?.['required'] && todoForm.touched">
+                A teendő határidejének kitöltése kötelező
+              </div>
+            </div>
+            <div class="field">
+                <label>Leírás</label>
+                <textarea formControlName="description" rows="2" style="resize: none;"></textarea>
+              </div>
+          </form>
+      </div>
+      <div class="actions">
+        <div class="ui button" (click)="closeModal()">Bezárás</div>
+        <div class="ui primary button" (click)="onSubmit()">Mentés</div>
+      </div>
     </div>
   </div>
-  <div class="field">
-    <label>Határidő</label>
-    <input type="text" formControlName="due_date" appDateMask />
-    <div
-      *ngIf="submitted && todoForm.get('due_date')?.errors?.['required']"
-      class="ui pointing red basic label"
-    >
-      A lejárati dátum megadása kötelező
-    </div>
-  </div>
-  <div class="field">
-    <label>Leírás</label>
-    <textarea formControlName="description" rows="3"></textarea>
-  </div>
-  <button class="ui primary button" (click)="onSubmit()">Mentés</button>
-</form>
+  

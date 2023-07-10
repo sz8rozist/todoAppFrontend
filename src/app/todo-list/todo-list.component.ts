@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Todo } from '../Todo';
 import { TodoService } from '../todo.service';
 
@@ -8,14 +8,24 @@ import { TodoService } from '../todo.service';
   styleUrls: ['./todo-list.component.css'],
 })
 export class TodoListComponent {
-  @Input() todos: Todo[] = [];
-  @Output() updatedTodo = new EventEmitter<Todo[]>();
+  todos: Todo[] = [];
+  modalOpen = false;
   constructor(private todoService: TodoService) {}
 
+  ngOnInit() {
+    this.loadTodo();
+  }
+
+  loadTodo() {
+    this.todoService.getTodos().subscribe((result) => {
+      this.todos = [...result];
+    });
+  }
+
   onDelete(todo: Todo) {
-    this.todoService.deleteTodo(todo.id as number).subscribe(
-      (res) => {
-        console.log(res);
+    this.todoService.deleteTodo(Number(todo.id)).subscribe(
+      (result) => {
+        console.log(result);
       },
       (error) => {
         console.log(error);
@@ -25,10 +35,26 @@ export class TodoListComponent {
     if (index !== -1) {
       this.todos.splice(index, 1);
     }
-    this.updatedTodo.emit(this.todos);
   }
 
-  updateCompleted(todo: Todo) {
+  todoIndex(todo: Todo) {
+    return this.todos.findIndex((t) => t.id === todo.id);
+  }
+
+  openModal() {
+    this.modalOpen = true;
+  }
+
+  closeModal() {
+    this.modalOpen = false;
+  }
+
+  onDataAdded(todo: Todo) {
+    console.log('new data');
+    this.todos.push(todo);
+  }
+
+  onUpdateCompleted(todo: Todo) {
     todo.completed = !todo.completed;
     this.todoService.updateTodo(todo).subscribe(
       (result) => {
@@ -38,10 +64,5 @@ export class TodoListComponent {
         console.log(error);
       }
     );
-    this.updatedTodo.emit(this.todos);
-  }
-
-  todoIndex(todo: Todo) {
-    return this.todos.findIndex((t) => t.id === todo.id);
   }
 }
